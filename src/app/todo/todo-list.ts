@@ -1,16 +1,17 @@
 import { Component, Injector, OnInit } from "@angular/core";
 import { Todo } from "./todo";
 import { ITodo } from "./todo.interface";
+import { TodoService } from './todo.service';
 
 @Component({
   template: ''
 })
-export class TodoList implements OnInit {
+export class TodoList extends TodoService implements OnInit {
   public static listTask: Todo[] = [];
   instance: any;
 
   constructor(public injector: Injector) {
-    this.instance = this;
+    super();
   }
 
   ngOnInit(): void {

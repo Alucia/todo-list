@@ -1,22 +1,49 @@
-import { Component, Injector } from '@angular/core';
+import { AfterContentChecked, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Todo } from 'src/app/todo/todo';
 import { TodoList } from '../../../todo/todo-list';
+import { ConfigConstants } from 'src/app/todo/constants';
+import { Subscription } from 'rxjs';
+import { TodoService } from 'src/app/todo/todo.service';
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.sass'],
 })
-export class TodoListComponent extends TodoList {
+export class TodoListComponent extends TodoList implements OnInit, AfterContentChecked, OnDestroy {
 
   title: string = '';
   description: string = '';
   tasks: string[] = [];
   idTask: number = 0;
   isEditable = false;
+  listTaskSubs: Subscription = new Subscription;
 
-  constructor(injector: Injector) {
+  constructor(
+    injector: Injector,
+    private todoService: TodoService
+  ) {
     super(injector);
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit();
+    console.log('ng On init');
+    // this.listTaskSubs = this.subscribe(ConfigConstants.OPTIONS.OPTION_ADD, (tasks) => {
+    //   console.log('this.tasks', this.tasks, tasks);
+    //   this.tasks = tasks
+    // });
+    this.todoService.data.subscribe((value) => {
+      this.tasks = value;
+    });
+    // this.suscribe(nombre1, nombre2).suscribe(ress=>{})
+  }
+  
+  ngAfterContentChecked() {
+  }
+  
+  ngOnDestroy(): void {
+    this.listTaskSubs.unsubscribe();
   }
 
   // eliminar

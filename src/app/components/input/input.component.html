@@ -1,0 +1,11 @@
+<div class="input__group">
+  <label *ngIf="label">{{label}}</label>
+  <input
+    [type]="typeControl"
+    [disabled]="disabled"
+    [(ngModel)]="currentValue"
+    (ngModelChange)="valueChange($event)"
+    (blur)="blurEvent($event.target)"
+    [maxlength]="maxlength"
+    tabindex="-1">
+</div>

@@ -1,0 +1,11 @@
+<p>Add to task</p>
+
+<form [formGroup]="todoForm">
+  <label>Título</label>
+  <app-input [label]="'Título'" formControlName="title"></app-input>
+  <br>
+  <app-input [label]="'Descripción'" formControlName="description"></app-input>
+  <br>
+  <app-button *ngIf="!isEditable" id="btn-Add" (clickEvent)="addTask()">Add task</app-button>
+  <app-button *ngIf="isEditable" id="btn-Save" (clickEvent)="saveTask()">Save task</app-button>
+</form>

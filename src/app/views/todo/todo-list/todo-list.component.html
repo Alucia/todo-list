@@ -1,0 +1,9 @@
+<p>Listado</p>
+<ul>
+  <li *ngFor="let item of tasks">
+    <input type="checkbox" name="check" (click)="updateTask(item)">
+    {{item}}
+    <span (click)="deleteTask(item)">Eliminar</span> - 
+    <span (click)="editTask(item)">Editar</span>
+  </li>
+</ul>

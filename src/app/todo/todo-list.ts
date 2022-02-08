@@ -18,10 +18,13 @@ export class TodoList extends TodoService implements OnInit {
     console.log(this)
   }
 
-  listItem(): string[] {
-    const list = TodoList.listTask.map((val, index) => {
-      index++;
-      return `${index} - ${val.fullTask}`
+  listItem(): Todo[] {
+    return TodoList.listTask;
+  }
+
+  listFiltered(index: number): Todo[] {
+    const list = TodoList.listTask.filter((val, i) => {
+      return i === index;
     });
     return list;
   }
@@ -34,13 +37,13 @@ export class TodoList extends TodoService implements OnInit {
 
   editItem(idTask: number, item: ITodo): Todo[] {
     const editedItem = new Todo(item.title, item.description);
-    TodoList.listTask[idTask - 1] = editedItem;
+    TodoList.listTask[idTask] = editedItem;
     return TodoList.listTask;   
   }
 
   deleteItem(idTask: number): Todo[] {
     TodoList.listTask = TodoList.listTask.filter((val, index) => {
-      return index !== idTask -1;
+      return index !== idTask;
     });
     return TodoList.listTask;   
   }
@@ -49,7 +52,7 @@ export class TodoList extends TodoService implements OnInit {
     const status = !item.status;
     const updatedItem = new Todo(item.title, item.description, status);
 
-    TodoList.listTask[idTask - 1] = updatedItem;
+    TodoList.listTask[idTask] = updatedItem;
 
     return TodoList.listTask;   
   }

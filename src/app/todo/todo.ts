@@ -15,7 +15,4 @@ export class Todo {
   get getStatus() {
     return this.status;
   }
-  get fullTask() {
-    return `${this.title} ${this.description} - Estado: "${this.status ? 'Completado' : 'Pendiente'}"`
-  }
 }

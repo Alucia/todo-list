@@ -5,6 +5,6 @@
   <br>
   <app-input [label]="'Descripción'" formControlName="description"></app-input>
   <br>
-  <app-button *ngIf="!isEditable" id="btn-Add" (clickEvent)="addTask()">Add task</app-button>
-  <app-button *ngIf="isEditable" id="btn-Save" (clickEvent)="saveTask()">Save task</app-button>
+  <app-button *ngIf="!isEditable" id="btn-Add" (clickEvent)="addTask('ADD')">Add task</app-button>
+  <app-button *ngIf="isEditable" id="btn-Save" (clickEvent)="addTask('EDIT')">Save task</app-button>
 </form>

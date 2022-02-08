@@ -1,22 +1,21 @@
-import { AfterContentChecked, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Todo } from 'src/app/todo/todo';
 import { TodoList } from '../../../todo/todo-list';
-import { ConfigConstants } from 'src/app/todo/constants';
 import { Subscription } from 'rxjs';
-import { TodoService } from 'src/app/todo/todo.service';
+import { AppEvent, TodoService } from 'src/app/todo/todo.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { AppEventType } from 'src/app/todo/even-type';
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.sass'],
 })
-export class TodoListComponent extends TodoList implements OnInit, AfterContentChecked, OnDestroy {
-
-  title: string = '';
-  description: string = '';
-  tasks: string[] = [];
+export class TodoListComponent extends TodoList implements OnInit, OnDestroy {
+  tasks = TodoList.listTask;
   idTask: number = 0;
   isEditable = false;
+  todoListGroup: FormGroup;
   listTaskSubs: Subscription = new Subscription;
 
   constructor(
@@ -24,66 +23,48 @@ export class TodoListComponent extends TodoList implements OnInit, AfterContentC
     private todoService: TodoService
   ) {
     super(injector);
+    this.todoListGroup = new FormGroup({
+      checkboxStatus: new FormControl()
+    })
   }
 
   override ngOnInit(): void {
     super.ngOnInit();
-    console.log('ng On init');
-    // this.listTaskSubs = this.subscribe(ConfigConstants.OPTIONS.OPTION_ADD, (tasks) => {
-    //   console.log('this.tasks', this.tasks, tasks);
-    //   this.tasks = tasks
-    // });
-    this.todoService.data.subscribe((value) => {
-      this.tasks = value;
-    });
-    // this.suscribe(nombre1, nombre2).suscribe(ress=>{})
+    this.getListTask();
   }
-  
-  ngAfterContentChecked() {
-  }
-  
+
   ngOnDestroy(): void {
     this.listTaskSubs.unsubscribe();
   }
 
+  getListTask() {
+    this.listTaskSubs = this.todoService.get(AppEventType.OPTION_ADD).subscribe((value: any) => {
+      if (value) {
+        this.tasks = value?.payload;
+      }
+    });
+  }
+
   // eliminar
-  deleteTask(item: string) {
-    console.log('item', item)
-    const idTask = Number(item.split(' -')[0]);
-    this.deleteItem(idTask);
-    this.tasks = this.listItem();
+  deleteTask(index: number) {
+    this.deleteItem(index);
+    this.todoService.set(new AppEvent(AppEventType.OPTION_ADD, this.listItem()));
   }
   
   // actualizar estado
-  updateTask(item: string) {
-    const idTask = Number(item.split(' -')[0]);
+  updateTask(index: number) {
+    const value: Todo[] = this.listFiltered(index);
 
-    const value: Todo[] = TodoList.listTask.filter((val, index) => {
-      return index === idTask - 1;
-    });
-
-    this.updateStatusItem(idTask, {
+    this.updateStatusItem(index, {
       title: value[0]!.getTitle,
       description: value[0]!.getDescription,
       status: value[0]!.getStatus,
     });
-    this.tasks = this.listItem();
+    this.todoService.set(new AppEvent(AppEventType.OPTION_ADD, this.listItem()));
   }
 
-    // editar
-    editTask(item: string) {
-      this.tasks = this.listItem();
-      const idTask = Number(item.split(' -')[0]);
-  
-      if (idTask !== null && typeof idTask === 'number') {
-        const value = TodoList.listTask.filter((val, index) => {
-          return index === idTask - 1;
-        });
-  
-        this.title = value[0].getTitle;
-        this.description = value[0].getDescription;
-        this.idTask = idTask;
-        this.isEditable = true;
-      }
-    };
+  // editar
+  editTask(index: number) {
+    this.todoService.set(new AppEvent(AppEventType.OPTION_EDIT, index));
+  };
 }

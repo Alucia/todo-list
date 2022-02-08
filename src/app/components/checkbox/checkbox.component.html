@@ -1,7 +1,7 @@
-<div class="checkbox__group">
-  <input
-    type="checkbox"
-    [disabled]="disabled"
-    [(ngModel)]="currentValue"
-    (ngModelChange)="valueChange($event)">
-</div>
+<input
+  class="checkbox-input"
+  type="checkbox"
+  [ngModel]="checked"
+  (ngModelChange)="onModelChange($event)"
+/>
+<ng-content> </ng-content>

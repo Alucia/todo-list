@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { GrouButtonComponent } from './grou-button.component';
+import { ButtonComponent } from './button.component';
 
-describe('GrouButtonComponent', () => {
-  let component: GrouButtonComponent;
-  let fixture: ComponentFixture<GrouButtonComponent>;
+describe('ButtonComponent', () => {
+  let component: ButtonComponent;
+  let fixture: ComponentFixture<ButtonComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [],
-      declarations: [GrouButtonComponent],
+      declarations: [ButtonComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GrouButtonComponent);
+    fixture = TestBed.createComponent(ButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -23,5 +23,9 @@ describe('GrouButtonComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
+  it('should create', () => {
+    spyOn(component.clickEvent, 'emit');
+    component.buttonClickEvent();
+    expect(component.clickEvent.emit).toHaveBeenCalled();
+  });
 });

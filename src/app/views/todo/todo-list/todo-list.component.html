@@ -1,9 +1,14 @@
 <p>Listado</p>
-<ul>
-  <li *ngFor="let item of tasks">
-    <input type="checkbox" name="check" (click)="updateTask(item)">
-    {{item}}
-    <span (click)="deleteTask(item)">Eliminar</span> - 
-    <span (click)="editTask(item)">Editar</span>
+<ul [formGroup]="todoListGroup" class="todo__list">
+  <li *ngFor="let item of tasks; let i = index">
+    <app-checkbox formControlName="checkboxStatus" (click)="updateTask(i)"></app-checkbox>
+    <span>
+      <p>{{i+1}}: </p>
+      <p>{{item?.getTitle}}</p> -
+      <p>{{item?.getDescription}} - 
+      <p>Estado: {{item?.getStatus ? 'Completado ' : 'Pendiente '}}</p>
+    </span>
+    <span (click)="deleteTask(i)">Eliminar</span> - 
+    <span (click)="editTask(i)">Editar</span>
   </li>
 </ul>

@@ -1,50 +1,22 @@
 import { Injectable } from '@angular/core';
+import { filter, Observable, Subject } from 'rxjs';
+import { AppEventType } from './even-type';
 
-import { BehaviorSubject, filter, map, Subject, Subscription, tap } from 'rxjs';
-import { IMessage } from './message.interface';
-
+export class AppEvent<T> {
+  constructor(public type: AppEventType, public payload: T) {}
+}
 @Injectable()
 export class TodoService {
 
-  // constructor() { }
-  // private _handler: Subject<IMessage> = new Subject<IMessage>();
-
-  // notification(type: string, payload: any = null) {
-  //   console.log('event', type, payload);
-  //   this._handler.next({ type, payload });
-  // }
-
-  // subscribe(type: string, callback: (payload: any) => void): Subscription {
-  //   return this._handler
-  //     .pipe(
-  //       filter((message: IMessage) => message.type === type),
-  //       tap((message: IMessage) => console.log(message)),
-  //     )
-  //     .subscribe(callback);
-  // }
-
-  // subscribe(type: string, callback: (payload: any) => void): Subscription {
-  //   return this._handler
-  //     .pipe(
-  //       filter((ev) => ev.type === type),
-  //       tap((message: IMessage) => console.log(message)),
-  //     )
-  //     .subscribe(callback);
-  // }
-
-  private dataSource = new BehaviorSubject<any>({});
-  data = this.dataSource.asObservable();
-
-  private passDataToview = new BehaviorSubject<any>(null);
-  passingData = this.passDataToview.asObservable();
-
-  constructor() {}
-
-  setData(data: string[]) {
-    this.dataSource.next(data);
+  private eventHandler = new Subject<AppEvent<any>>();
+  get(eventType: AppEventType): Observable<AppEvent<any>> {
+    console.log(this.eventHandler);
+    return this.eventHandler.pipe(filter((event) => event.type === eventType));
   }
-
-  // passData(data) {
-  //   this.passDataToview.next(data);
+  set<T>(event: AppEvent<T>): void {
+    this.eventHandler.next(event);
+  }
+  // clear<T>(event: AppEvent<T>): void {
+  //   this.eventHandler.next(null);
   // }
 }

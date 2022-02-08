@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { InputComponent } from './input.component';
+import { CheckboxComponent } from './checkbox.component';
 
-describe('InputComponent', () => {
-  let component: InputComponent;
-  let fixture: ComponentFixture<InputComponent>;
+describe('CheckboxComponent', () => {
+  let component: CheckboxComponent;
+  let fixture: ComponentFixture<CheckboxComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -12,11 +12,11 @@ describe('InputComponent', () => {
         FormsModule,
       ],
       declarations: [
-        InputComponent,
+        CheckboxComponent,
       ],
     });
 
-    fixture = TestBed.createComponent(InputComponent);
+    fixture = TestBed.createComponent(CheckboxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
